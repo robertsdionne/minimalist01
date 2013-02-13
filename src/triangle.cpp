@@ -11,7 +11,6 @@
 #include "ofMain.h"
 #include "triangle.h"
 
-const float Triangle::kReproductivity = 0.005;
 const ofColor Triangle::kColor = ofColor(0.0, 128.0, 128.0);
 
 Triangle::Triangle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -19,12 +18,15 @@ Triangle::Triangle(float mass, float size, float orientation, ofVec2f position, 
 
 Triangle::~Triangle() {}
 
+ofColor Triangle::color() const {
+  return kColor;
+}
+
 float Triangle::reproductivity() const {
   return kReproductivity;
 }
 
 void Triangle::DrawInternal() const {
-  ofSetColor(kColor);
   ofBeginShape();
   for (unsigned int i = 0; i < 4; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 3.0), sin(i * 2.0 * M_PI / 3.0));

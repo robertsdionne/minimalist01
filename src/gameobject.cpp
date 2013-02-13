@@ -18,10 +18,11 @@ GameObject::GameObject(
 GameObject::~GameObject() {}
 
 void GameObject::Draw() const {
-  ofPushMatrix();
   ofPushStyle();
+  ofSetColor(color());
   ofSetLineWidth(size / 4.0);
   ofNoFill();
+  ofPushMatrix();
   ofTranslate(position);
   ofScale(size, size);
   ofRotateZ(180.0 / M_PI * orientation);

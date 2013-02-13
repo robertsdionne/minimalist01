@@ -9,7 +9,6 @@
 #include "ofMain.h"
 #include "square.h"
 
-const float Square::kReproductivity = 0.005;
 const ofColor Square::kColor = ofColor(255.0, 192.0, 203.0);
 
 Square::Square(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -17,12 +16,15 @@ Square::Square(float mass, float size, float orientation, ofVec2f position, ofVe
 
 Square::~Square() {}
 
+ofColor Square::color() const {
+  return kColor;
+}
+
 float Square::reproductivity() const {
   return kReproductivity;
 }
 
 void Square::DrawInternal() const {
-  ofSetColor(kColor);
   ofBeginShape();
   for (unsigned int i = 0; i < 5; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 4.0), sin(i * 2.0 * M_PI / 4.0));

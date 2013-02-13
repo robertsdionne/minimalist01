@@ -20,6 +20,8 @@ public:
   
   virtual ~GameObject();
   
+  virtual ofColor color() const = 0;
+  
   virtual float reproductivity() const = 0;
   
   void Draw() const;

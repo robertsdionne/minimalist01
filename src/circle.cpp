@@ -9,7 +9,6 @@
 #include "circle.h"
 #include "ofMain.h"
 
-const float Circle::kReproductivity = 0.005;
 const ofColor Circle::kColor = ofColor(255.0, 0.0, 0.0);
 
 Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -17,12 +16,15 @@ Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVe
 
 Circle::~Circle() {}
 
+ofColor Circle::color() const {
+  return kColor;
+}
+
 float Circle::reproductivity() const {
   return kReproductivity;
 }
 
 void Circle::DrawInternal() const {
-  ofSetColor(kColor);
   ofBeginShape();
   for (unsigned int i = 0; i < 26; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 25.0), sin(i * 2.0 * M_PI / 25.0));

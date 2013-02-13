@@ -21,6 +21,8 @@ public:
   
   virtual ~Circle();
   
+  virtual ofColor color() const;
+  
   virtual float reproductivity() const;
   
   virtual void DrawInternal() const;
@@ -28,7 +30,7 @@ public:
   virtual void ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population);
   
 private:
-  static const float kReproductivity;
+  static constexpr float kReproductivity = 0.005;
   static const ofColor kColor;
 };
 
