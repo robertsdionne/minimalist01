@@ -20,12 +20,12 @@ GameObject::~GameObject() {}
 void GameObject::Draw() const {
   ofPushStyle();
   ofSetColor(color());
-  ofSetLineWidth(size / 4.0);
+  ofSetLineWidth(size * kLineWidthScaleFactor);
   ofNoFill();
   ofPushMatrix();
   ofTranslate(position);
   ofScale(size, size);
-  ofRotateZ(180.0 / M_PI * orientation);
+  ofRotateZ(ofRadToDeg(orientation));
   DrawInternal();
   ofPopMatrix();
   ofPopStyle();
@@ -33,8 +33,9 @@ void GameObject::Draw() const {
 
 void GameObject::MaybeReproduce(std::list<GameObject *> &population) {
   if (ofRandomuf() < reproductivity()) {
-    size /= 2.0;
-    velocity = size * ofVec2f(ofRandom(-10.0, 10.0), ofRandom(-10.0, 10.0));
+    size *= kChildScaleFactor;
+    velocity = size * ofVec2f(
+        kMaxComponentOfVelocity * ofRandomf(), kMaxComponentOfVelocity * ofRandomf());
     ReproduceInternal(-velocity, population);
   }
 }

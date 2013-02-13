@@ -41,6 +41,11 @@ public:
   ofVec2f position;
   ofVec2f velocity;
   ofVec2f force;
+  
+private:
+  static constexpr float kChildScaleFactor = 0.5;
+  static constexpr float kLineWidthScaleFactor = 0.25;
+  static constexpr float kMaxComponentOfVelocity = 10.0;
 };
 
 #endif /* defined(__minimalist01__gameobject__) */
