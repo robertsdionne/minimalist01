@@ -9,6 +9,7 @@
 #include "ofMain.h"
 #include "square.h"
 
+const float Square::kReproductivity = 0.005;
 const ofColor Square::kColor = ofColor(255.0, 192.0, 203.0);
 
 Square::Square(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -16,9 +17,12 @@ Square::Square(float mass, float size, float orientation, ofVec2f position, ofVe
 
 Square::~Square() {}
 
+float Square::reproductivity() const {
+  return kReproductivity;
+}
+
 void Square::DrawInternal() const {
   ofSetColor(kColor);
-  ofNoFill();
   ofBeginShape();
   for (unsigned int i = 0; i < 5; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 4.0), sin(i * 2.0 * M_PI / 4.0));
@@ -26,9 +30,6 @@ void Square::DrawInternal() const {
   ofEndShape();
 }
 
-GameObject *Square::Reproduce() {
-  size /= 2.0;
-  ofVec2f impulse = ofVec2f(ofRandom(-100.0, 100.0), ofRandom(-100.0, 100.0));
-  velocity = impulse;
-  return new Square(mass, size, orientation, position, -impulse);
+void Square::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
+  population.push_back(new Square(mass, size, orientation, position, velocity));
 }

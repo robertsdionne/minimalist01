@@ -6,9 +6,12 @@
 //
 //
 
+#include <list>
+
 #include "ofMain.h"
 #include "triangle.h"
 
+const float Triangle::kReproductivity = 0.005;
 const ofColor Triangle::kColor = ofColor(0.0, 128.0, 128.0);
 
 Triangle::Triangle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -16,9 +19,12 @@ Triangle::Triangle(float mass, float size, float orientation, ofVec2f position, 
 
 Triangle::~Triangle() {}
 
+float Triangle::reproductivity() const {
+  return kReproductivity;
+}
+
 void Triangle::DrawInternal() const {
   ofSetColor(kColor);
-  ofNoFill();
   ofBeginShape();
   for (unsigned int i = 0; i < 4; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 3.0), sin(i * 2.0 * M_PI / 3.0));
@@ -26,9 +32,6 @@ void Triangle::DrawInternal() const {
   ofEndShape();
 }
 
-GameObject *Triangle::Reproduce() {
-  size /= 2.0;
-  ofVec2f impulse = ofVec2f(ofRandom(-100.0, 100.0), ofRandom(-100.0, 100.0));
-  velocity = impulse;
-  return new Triangle(mass, size, orientation, position, -impulse);
+void Triangle::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
+  population.push_back(new Triangle(mass, size, orientation, position, velocity));
 }

@@ -10,6 +10,7 @@
 #define __minimalist01__gameobject__
 
 #include <iostream>
+#include <list>
 
 #include "ofMain.h"
 
@@ -19,11 +20,15 @@ public:
   
   virtual ~GameObject();
   
+  virtual float reproductivity() const = 0;
+  
   void Draw() const;
   
   virtual void DrawInternal() const = 0;
   
-  virtual GameObject *Reproduce() = 0;
+  virtual void MaybeReproduce(std::list<GameObject *> &population);
+  
+  virtual void ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) = 0;
   
   void Update(float dt);
   

@@ -10,7 +10,7 @@ const unsigned int testApp::kNumGameObjects = 25;
 void testApp::setup() {
   ofEnableSmoothing();
   for (unsigned int i = 0; i < kNumGameObjects; ++i) {
-    float choice = ofRandom(1.0);
+    float choice = ofRandomuf();
     if (choice < 0.333) {
       objects.push_back(new Triangle(1.0, ofRandom(5.0, 15.0),
           ofRandom(2.0f * M_PI), ofVec2f(ofRandomWidth(), ofRandomHeight()), ofVec2f()));
@@ -27,25 +27,11 @@ void testApp::setup() {
 //--------------------------------------------------------------
 void testApp::update() {
   for (auto object : objects) {
-    object->orientation += ofRandom(-1.0, 1.0) * M_PI / 180.0;
-    object->size += ofRandom(-1.0, 1.0);
+    object->orientation += ofRandomf() * M_PI / 180.0;
+    object->size += ofRandomf();
     object->force = -0.5 * object->velocity;
     object->Update(1.0 / 60.0);
-    if (object->position.x < 0) {
-      object->position.x += ofGetWidth();
-    }
-    if (object->position.x >= ofGetWidth()) {
-      object->position.x -= ofGetWidth();
-    }
-    if (object->position.y < 0) {
-      object->position.y += ofGetHeight();
-    }
-    if (object->position.y >= ofGetHeight()) {
-      object->position.y -= ofGetHeight();
-    }
-    if (ofRandom(1.0) < 0.001) {
-      objects.push_back(object->Reproduce());
-    }
+    object->MaybeReproduce(objects);
   }
   objects.remove_if([] (const GameObject *const object) -> bool {
     if (object->size <= 0) {
@@ -60,11 +46,9 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw() {
   ofBackground(0.0, 0.0, 0.0);
-  std::list<GameObject *>::iterator i;
-  for (i = objects.begin(); i != objects.end(); ++i) {
-    (*i)->Draw();
+  for (auto object : objects) {
+    object->Draw();
   }
-  std::cout << objects.size() << std::endl;
 }
 
 //--------------------------------------------------------------

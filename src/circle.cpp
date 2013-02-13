@@ -9,6 +9,7 @@
 #include "circle.h"
 #include "ofMain.h"
 
+const float Circle::kReproductivity = 0.005;
 const ofColor Circle::kColor = ofColor(255.0, 0.0, 0.0);
 
 Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
@@ -16,9 +17,12 @@ Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVe
 
 Circle::~Circle() {}
 
+float Circle::reproductivity() const {
+  return kReproductivity;
+}
+
 void Circle::DrawInternal() const {
   ofSetColor(kColor);
-  ofNoFill();
   ofBeginShape();
   for (unsigned int i = 0; i < 26; ++i) {
     ofVertex(cos(i * 2.0 *  M_PI / 25.0), sin(i * 2.0 * M_PI / 25.0));
@@ -26,9 +30,6 @@ void Circle::DrawInternal() const {
   ofEndShape();
 }
 
-GameObject *Circle::Reproduce() {
-  size /= 2.0;
-  ofVec2f impulse = ofVec2f(ofRandom(-100.0, 100.0), ofRandom(-100.0, 100.0));
-  velocity = impulse;
-  return new Circle(mass, size, orientation, position, -impulse);
+void Circle::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
+  population.push_back(new Circle(mass, size, orientation, position, velocity));
 }

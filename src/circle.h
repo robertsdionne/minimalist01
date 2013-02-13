@@ -10,6 +10,7 @@
 #define __minimalist01__circle__
 
 #include <iostream>
+#include <list>
 
 #include "gameobject.h"
 #include "ofMain.h"
@@ -20,11 +21,14 @@ public:
   
   virtual ~Circle();
   
+  virtual float reproductivity() const;
+  
   virtual void DrawInternal() const;
   
-  virtual GameObject *Reproduce();
+  virtual void ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population);
   
 private:
+  static const float kReproductivity;
   static const ofColor kColor;
 };
 
