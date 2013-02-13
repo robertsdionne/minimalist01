@@ -15,11 +15,25 @@
 
 class GameObject {
 public:
-  GameObject(float mass, ofVec2f position, ofVec2f velocity);
+  GameObject(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity);
   
   virtual ~GameObject();
   
-  void Draw();
+  void Draw() const;
+  
+  virtual void DrawInternal() const = 0;
+  
+  virtual GameObject *Reproduce() = 0;
+  
+  void Update(float dt);
+  
+public:
+  float mass;
+  float size;
+  float orientation;
+  ofVec2f position;
+  ofVec2f velocity;
+  ofVec2f force;
 };
 
 #endif /* defined(__minimalist01__gameobject__) */
