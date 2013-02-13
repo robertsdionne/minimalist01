@@ -32,6 +32,9 @@ public:
   void gotMessage(ofMessage msg);
   
 private:
+  void CreateRandomShape(ofVec2f at);
+  
+private:
   static const unsigned int kNumGameObjects;
   
   std::list<GameObject *> objects;

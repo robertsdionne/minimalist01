@@ -10,27 +10,14 @@ const unsigned int testApp::kNumGameObjects = 25;
 void testApp::setup() {
   ofEnableSmoothing();
   for (unsigned int i = 0; i < kNumGameObjects; ++i) {
-    float choice = ofRandomuf();
-    if (choice < 0.333) {
-      objects.push_back(new Triangle(1.0, ofRandom(5.0, 15.0),
-          ofRandom(2.0f * M_PI), ofVec2f(ofRandomWidth(), ofRandomHeight()), ofVec2f()));
-    } else if (choice < 0.666) {
-      objects.push_back(new Square(1.0, ofRandom(5.0, 15.0),
-          ofRandom(2.0f * M_PI), ofVec2f(ofRandomWidth(), ofRandomHeight()), ofVec2f()));
-    } else {
-      objects.push_back(new Circle(1.0, ofRandom(5.0, 15.0),
-          ofRandom(2.0f * M_PI), ofVec2f(ofRandomWidth(), ofRandomHeight()), ofVec2f()));
-    }
+    CreateRandomShape(ofVec2f(ofRandomWidth(), ofRandomHeight()));
   }
 }
 
 //--------------------------------------------------------------
 void testApp::update() {
   for (auto object : objects) {
-    object->orientation += ofRandomf() * M_PI / 180.0;
-    object->size += ofRandomf();
-    object->force = -0.5 * object->velocity;
-    object->Update(1.0 / 60.0);
+    object->Update(1.0 / ofGetFrameRate());
     object->MaybeReproduce(objects);
   }
   objects.remove_if([] (const GameObject *const object) -> bool {
@@ -68,7 +55,7 @@ void testApp::mouseMoved(int x, int y) {
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button) {
-
+  CreateRandomShape(ofVec2f(x, y));
 }
 
 //--------------------------------------------------------------
@@ -94,4 +81,19 @@ void testApp::gotMessage(ofMessage msg) {
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo) { 
 
+}
+
+void testApp::CreateRandomShape(ofVec2f at) {
+  constexpr float mass = 1.0;
+  const float choice = ofRandomuf();
+  const float size = ofRandom(5.0, 15.0);
+  const float orientation = 2.0 * M_PI * ofRandomuf();
+  const ofVec2f velocity = ofVec2f();
+  if (choice < 1.0 / 3.0) {
+    objects.push_back(new Triangle(mass, size, orientation, at, velocity));
+  } else if (choice < 2.0 / 3.0) {
+    objects.push_back(new Square(mass, size, orientation, at, velocity));
+  } else {
+    objects.push_back(new Circle(mass, size, orientation, at, velocity));
+  }
 }

@@ -41,6 +41,7 @@ void GameObject::MaybeReproduce(std::list<GameObject *> &population) {
 }
 
 void GameObject::Update(float dt) {
+  UpdateInternal(dt);
   position += velocity * dt;
   velocity += force / mass * dt;
   force = ofVec2f();
@@ -56,4 +57,10 @@ void GameObject::Update(float dt) {
   if (position.y >= ofGetHeight()) {
     position.y -= ofGetHeight();
   }
+}
+
+void GameObject::UpdateInternal(float dt) {
+  orientation += ofDegToRad(ofRandomf());
+  size += ofRandomf();
+  force = -kDrag * velocity;
 }

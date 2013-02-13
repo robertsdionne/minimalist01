@@ -34,6 +34,8 @@ public:
   
   void Update(float dt);
   
+  virtual void UpdateInternal(float dt);
+  
 public:
   float mass;
   float size;
@@ -44,6 +46,7 @@ public:
   
 private:
   static constexpr float kChildScaleFactor = 0.5;
+  static constexpr float kDrag = 0.5;
   static constexpr float kLineWidthScaleFactor = 0.25;
   static constexpr float kMaxComponentOfVelocity = 10.0;
 };
