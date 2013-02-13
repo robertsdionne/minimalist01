@@ -20,8 +20,8 @@ void Circle::DrawInternal() const {
   ofSetColor(kColor);
   ofNoFill();
   ofBeginShape();
-  for (unsigned int i = 0; i < 51; ++i) {
-    ofVertex(cos(i * 2.0 *  M_PI / 50.0), sin(i * 2.0 * M_PI / 50.0));
+  for (unsigned int i = 0; i < 26; ++i) {
+    ofVertex(cos(i * 2.0 *  M_PI / 25.0), sin(i * 2.0 * M_PI / 25.0));
   }
   ofEndShape();
 }

@@ -26,24 +26,35 @@ void testApp::setup() {
 
 //--------------------------------------------------------------
 void testApp::update() {
-  std::list<GameObject *> newObjects;
-  std::list<GameObject *>::iterator i;
-  for (i = objects.begin(); i != objects.end(); ++i) {
-    if (ofRandom(1.0) < 0.001) {
-      newObjects.push_back((*i)->Reproduce());
+  for (auto object : objects) {
+    object->orientation += ofRandom(-1.0, 1.0) * M_PI / 180.0;
+    object->size += ofRandom(-1.0, 1.0);
+    object->force = -0.5 * object->velocity;
+    object->Update(1.0 / 60.0);
+    if (object->position.x < 0) {
+      object->position.x += ofGetWidth();
     }
-    (*i)->Update(1.0 / 60.0);
-    (*i)->force = -(*i)->velocity * 0.5;
-    //(*i)->position += ofVec2f(ofRandom(-1.0, 1.0), ofRandom(-1.0, 1.0));
-    (*i)->orientation += ofRandom(-1.0, 1.0) * M_PI / 180.0;
-    (*i)->size += ofRandom(-1.0, 1.0);
-    if ((*i)->size <= 0 || (*i)->position.x < 0 || (*i)->position.x > ofGetWidth() ||
-        (*i)->position.y < 0 || (*i)->position.y > ofGetHeight()) {
-      delete (*i);
-      objects.erase(i);
+    if (object->position.x >= ofGetWidth()) {
+      object->position.x -= ofGetWidth();
+    }
+    if (object->position.y < 0) {
+      object->position.y += ofGetHeight();
+    }
+    if (object->position.y >= ofGetHeight()) {
+      object->position.y -= ofGetHeight();
+    }
+    if (ofRandom(1.0) < 0.001) {
+      objects.push_back(object->Reproduce());
     }
   }
-  objects.splice(objects.end(), newObjects);
+  objects.remove_if([] (const GameObject *const object) -> bool {
+    if (object->size <= 0) {
+      delete object;
+      return true;
+    } else {
+      return false;
+    }
+  });
 }
 
 //--------------------------------------------------------------
