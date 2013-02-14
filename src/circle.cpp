@@ -11,8 +11,8 @@
 
 const ofColor Circle::kColor = ofColor(255.0, 102.0, 102.0);
 
-Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
-: GameObject(mass, size, orientation, position, velocity) {}
+Circle::Circle(bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
+: GameObject(player, mass, size, orientation, position, velocity) {}
 
 Circle::~Circle() {}
 
@@ -30,8 +30,4 @@ void Circle::DrawInternal() const {
     ofVertex(cos(i * 2.0 *  M_PI / 25.0), sin(i * 2.0 * M_PI / 25.0));
   }
   ofEndShape();
-}
-
-void Circle::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
-  population.push_back(new Circle(mass, size, orientation, position, velocity));
 }

@@ -11,8 +11,8 @@
 
 const ofColor Square::kColor = ofColor(255.0, 105.0, 248.0);
 
-Square::Square(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
-: GameObject(mass, size, orientation, position, velocity) {}
+Square::Square(bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
+: GameObject(player, mass, size, orientation, position, velocity) {}
 
 Square::~Square() {}
 
@@ -30,8 +30,4 @@ void Square::DrawInternal() const {
     ofVertex(cos(i * 2.0 *  M_PI / 4.0), sin(i * 2.0 * M_PI / 4.0));
   }
   ofEndShape();
-}
-
-void Square::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
-  population.push_back(new Square(mass, size, orientation, position, velocity));
 }

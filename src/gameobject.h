@@ -16,7 +16,7 @@
 
 class GameObject {
 public:
-  GameObject(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity);
+  GameObject(bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity);
   
   virtual ~GameObject();
   
@@ -28,15 +28,17 @@ public:
   
   virtual void DrawInternal() const = 0;
   
-  virtual void MaybeReproduce(std::list<GameObject *> &population);
-  
-  virtual void ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) = 0;
-  
+  virtual void MaybeReproduce(
+      std::list<GameObject *> &triangles,
+      std::list<GameObject *> &circles,
+      std::list<GameObject *> &squares, unsigned int reproduce_type);
+
   void Update(float dt);
   
   virtual void UpdateInternal(float dt);
   
 public:
+  bool player;
   float mass;
   float size;
   float orientation;
@@ -44,11 +46,14 @@ public:
   ofVec2f velocity;
   ofVec2f force;
   
+  static constexpr unsigned int kMaxPopulation = 100;
+  static constexpr float kMaxSize = 50.0;
+  
 private:
   static constexpr float kChildScaleFactor = 0.5;
-  static constexpr float kDrag = 0.5;
+  static constexpr float kDrag = 0.9;
+  static constexpr float kGrowthRate = 0.005;
   static constexpr float kLineWidthScaleFactor = 0.25;
-  static constexpr float kMaxComponentOfVelocity = 10.0;
-};
+  static constexpr float kMaxComponentOfVelocity = 10.0;};
 
 #endif /* defined(__minimalist01__gameobject__) */

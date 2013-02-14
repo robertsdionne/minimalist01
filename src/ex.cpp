@@ -11,8 +11,8 @@
 
 const ofColor Ex::kColor = ofColor(124.0, 178.0, 232.0);
 
-Ex::Ex(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
-: GameObject(mass, size, orientation, position, velocity) {}
+Ex::Ex(bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
+: GameObject(player, mass, size, orientation, position, velocity) {}
 
 Ex::~Ex() {}
 
@@ -35,8 +35,4 @@ void Ex::DrawInternal() const {
     ofVertex(cos(i * 2.0 *  M_PI / 4.0), sin(i * 2.0 * M_PI / 4.0));
   }
   ofEndShape();
-}
-
-void Ex::ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population) {
-  population.push_back(new Ex(mass, size, orientation, position, velocity));
 }

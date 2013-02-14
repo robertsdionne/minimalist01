@@ -8,35 +8,60 @@
 
 #include <list>
 
+#include "circle.h"
 #include "gameobject.h"
 #include "ofMain.h"
+#include "triangle.h"
+#include "square.h"
+
+constexpr unsigned int GameObject::kMaxPopulation;
+constexpr float GameObject::kMaxSize;
+constexpr float GameObject::kChildScaleFactor;
+constexpr float GameObject::kDrag;
+constexpr float GameObject::kGrowthRate;
+constexpr float GameObject::kLineWidthScaleFactor;
+constexpr float GameObject::kMaxComponentOfVelocity;
 
 GameObject::GameObject(
-    float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
-: mass(mass), size(size), orientation(orientation), position(position), velocity(velocity), force() {}
+    bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
+: player(player), mass(mass), size(size), orientation(orientation), position(position), velocity(velocity), force() {}
 
 GameObject::~GameObject() {}
 
 void GameObject::Draw() const {
-  ofPushStyle();
-  ofSetColor(color());
-  ofSetLineWidth(size * kLineWidthScaleFactor);
-  ofNoFill();
   ofPushMatrix();
   ofTranslate(position);
   ofScale(size, size);
   ofRotateZ(ofRadToDeg(orientation));
+  ofPushStyle();
+  if (!player) {
+    ofSetColor(color() / 3.0);
+    ofFill();
+  } else {
+    ofSetColor(color());
+    ofNoFill();
+  }
+  ofSetLineWidth(size * kLineWidthScaleFactor);
   DrawInternal();
-  ofPopMatrix();
   ofPopStyle();
+  ofPopMatrix();
 }
 
-void GameObject::MaybeReproduce(std::list<GameObject *> &population) {
-  if (ofRandomuf() < reproductivity()) {
+void GameObject::MaybeReproduce(
+    std::list<GameObject *> &triangles,
+    std::list<GameObject *> &circles,
+    std::list<GameObject *> &squares, unsigned int reproduce_type) {
+  if (ofRandomuf() < reproductivity() && triangles.size() + circles.size() + squares.size() < kMaxPopulation) {
     size *= kChildScaleFactor;
     velocity = size * ofVec2f(
         kMaxComponentOfVelocity * ofRandomf(), kMaxComponentOfVelocity * ofRandomf());
-    ReproduceInternal(-velocity, population);
+    if (reproduce_type == 0) {
+      triangles.push_back(new Triangle(player, mass, size, orientation, position, -velocity));
+    } else if (reproduce_type == 1) {
+      circles.push_back(new Circle(player, mass, size, orientation, position, -velocity));
+    } else {
+      squares.push_back(new Square(player, mass, size, orientation, position, -velocity));
+    }
   }
 }
 
@@ -61,6 +86,8 @@ void GameObject::Update(float dt) {
 
 void GameObject::UpdateInternal(float dt) {
   orientation += ofDegToRad(ofRandomf());
-  size += ofRandomf();
-  force = -kDrag * velocity;
+  if (size < kMaxSize) {
+    size += kGrowthRate * ofRandomuf();
+  }
+  force += -kDrag * velocity;
 }

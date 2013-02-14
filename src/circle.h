@@ -17,7 +17,7 @@
 
 class Circle : public GameObject {
 public:
-  Circle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity);
+  Circle(bool player, float mass, float size, float orientation, ofVec2f position, ofVec2f velocity);
   
   virtual ~Circle();
   
@@ -27,10 +27,8 @@ public:
   
   virtual void DrawInternal() const;
   
-  virtual void ReproduceInternal(ofVec2f velocity, std::list<GameObject *> &population);
-  
 private:
-  static constexpr float kReproductivity = 0.005;
+  static constexpr float kReproductivity = 0.001;
   static const ofColor kColor;
 };
 
