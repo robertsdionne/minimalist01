@@ -1,4 +1,5 @@
 #include "circle.h"
+#include "ex.h"
 #include "gameobject.h"
 #include "square.h"
 #include "testApp.h"
@@ -89,11 +90,13 @@ void testApp::CreateRandomShape(ofVec2f at) {
   const float size = ofRandom(5.0, 15.0);
   const float orientation = 2.0 * M_PI * ofRandomuf();
   const ofVec2f velocity = ofVec2f();
-  if (choice < 1.0 / 3.0) {
+  if (choice < 1.0 / 4.0) {
     objects.push_back(new Triangle(mass, size, orientation, at, velocity));
-  } else if (choice < 2.0 / 3.0) {
+  } else if (choice < 2.0 / 4.0) {
     objects.push_back(new Square(mass, size, orientation, at, velocity));
-  } else {
+  } else if (choice < 3.0 / 4.0) {
     objects.push_back(new Circle(mass, size, orientation, at, velocity));
+  } else {
+    objects.push_back(new Ex(mass, size, orientation, at, velocity));
   }
 }

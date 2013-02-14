@@ -11,7 +11,7 @@
 #include "ofMain.h"
 #include "triangle.h"
 
-const ofColor Triangle::kColor = ofColor(0.0, 128.0, 128.0);
+const ofColor Triangle::kColor = ofColor(64.0, 226.0, 160.0);
 
 Triangle::Triangle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
 : GameObject(mass, size, orientation, position, velocity) {}

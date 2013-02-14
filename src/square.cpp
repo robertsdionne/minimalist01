@@ -9,7 +9,7 @@
 #include "ofMain.h"
 #include "square.h"
 
-const ofColor Square::kColor = ofColor(255.0, 192.0, 203.0);
+const ofColor Square::kColor = ofColor(255.0, 105.0, 248.0);
 
 Square::Square(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
 : GameObject(mass, size, orientation, position, velocity) {}

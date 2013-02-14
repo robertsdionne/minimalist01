@@ -9,7 +9,7 @@
 #include "circle.h"
 #include "ofMain.h"
 
-const ofColor Circle::kColor = ofColor(255.0, 0.0, 0.0);
+const ofColor Circle::kColor = ofColor(255.0, 102.0, 102.0);
 
 Circle::Circle(float mass, float size, float orientation, ofVec2f position, ofVec2f velocity)
 : GameObject(mass, size, orientation, position, velocity) {}
