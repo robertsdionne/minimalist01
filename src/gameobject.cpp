@@ -51,16 +51,18 @@ void GameObject::MaybeReproduce(
     std::list<GameObject *> &triangles,
     std::list<GameObject *> &circles,
     std::list<GameObject *> &squares, unsigned int reproduce_type) {
-  if (ofRandomuf() < reproductivity() && triangles.size() + circles.size() + squares.size() < kMaxPopulation) {
+  if (ofRandomuf() < reproductivity()) {
     size *= kChildScaleFactor;
     velocity = size * ofVec2f(
         kMaxComponentOfVelocity * ofRandomf(), kMaxComponentOfVelocity * ofRandomf());
-    if (reproduce_type == 0) {
-      triangles.push_back(new Triangle(player, mass, size, orientation, position, -velocity));
-    } else if (reproduce_type == 1) {
-      circles.push_back(new Circle(player, mass, size, orientation, position, -velocity));
-    } else {
-      squares.push_back(new Square(player, mass, size, orientation, position, -velocity));
+    if (triangles.size() + circles.size() + squares.size() < kMaxPopulation) {
+      if (reproduce_type == 0) {
+        triangles.push_back(new Triangle(player, mass, size, orientation, position, -velocity));
+      } else if (reproduce_type == 1) {
+        circles.push_back(new Circle(player, mass, size, orientation, position, -velocity));
+      } else {
+        squares.push_back(new Square(player, mass, size, orientation, position, -velocity));
+      }
     }
   }
 }
